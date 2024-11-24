@@ -6,15 +6,17 @@ using Library.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
-var serverName = Environment.GetEnvironmentVariable("SERVER_NAME") ??
-                 throw new InvalidOperationException("SERVER_NAME is not set in .env file.");
+var serverName = Environment.GetEnvironmentVariable("SERVER_NAME")
+                 ?? throw new InvalidOperationException("SERVER_NAME is not set in .env file.");
 
-var connectionString = $"Server={serverName};Database=LibraryDB;Trusted_Connection=True;Encrypt=False;";
+var connectionStringFromConfig = builder.Configuration.GetConnectionString("DefaultConnection");
 
-connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? connectionString;
+var connectionString = $"Server={serverName};{connectionStringFromConfig}";
+
+Console.WriteLine($"DEFAULT CONNECTION: {connectionString}");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+    options.UseSqlServer(connectionString));builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
