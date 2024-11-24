@@ -1,12 +1,17 @@
+using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+Env.Load();
+var serverName = Environment.GetEnvironmentVariable("SERVER_NAME") ??
+                 throw new InvalidOperationException("SERVER_NAME is not set in .env file.");
+
+var connectionString = $"Server={serverName};Database=LibraryDB;Trusted_Connection=True;Encrypt=False;";
+
+connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? connectionString;
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
