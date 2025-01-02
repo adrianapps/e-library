@@ -15,6 +15,11 @@ public class Borrow
     public DateTime BorrowDate { get; set; }
     public DateTime? ReturnDate { get; set; }
     public BorrowStatus Status { get; set; }
+
+    public override string ToString()
+    {
+        return $"{User.UserName}-{Book.Title}";
+    }
 }
 
 public enum BorrowStatus

@@ -7,25 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Library.Controllers
+namespace Library.Areas.Admin.Controllers
 {
-    public class CategoryController : Controller
+    [Authorize(Roles="Admin")]
+    [Area("Admin")]
+    public class BorrowController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoryController(ApplicationDbContext context)
+        public BorrowController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Category
+        // GET: Admin/Borrow
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            var applicationDbContext = _context.Borrow.Include(b => b.Book).Include(b => b.User);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Category/Details/5
+        // GET: Admin/Borrow/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +37,45 @@ namespace Library.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var borrow = await _context.Borrow
+                .Include(b => b.Book)
+                .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (borrow == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(borrow);
         }
 
-        // GET: Category/Create
+        // GET: Admin/Borrow/Create
         public IActionResult Create()
         {
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
             return View();
         }
 
-        // POST: Category/Create
+        // POST: Admin/Borrow/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,BookId,UserId,BorrowDate,ReturnDate,Status")] Borrow borrow)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                _context.Add(borrow);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", borrow.BookId);
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", borrow.UserId);
+            return View(borrow);
         }
 
-        // GET: Category/Edit/5
+        // GET: Admin/Borrow/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +83,24 @@ namespace Library.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var borrow = await _context.Borrow.FindAsync(id);
+            if (borrow == null)
             {
                 return NotFound();
             }
-            return View(category);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", borrow.BookId);
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", borrow.UserId);
+            return View(borrow);
         }
 
-        // POST: Category/Edit/5
+        // POST: Admin/Borrow/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BookId,UserId,BorrowDate,ReturnDate,Status")] Borrow borrow)
         {
-            if (id != category.Id)
+            if (id != borrow.Id)
             {
                 return NotFound();
             }
@@ -97,12 +109,12 @@ namespace Library.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(borrow);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!BorrowExists(borrow.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +125,12 @@ namespace Library.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", borrow.BookId);
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", borrow.UserId);
+            return View(borrow);
         }
 
-        // GET: Category/Delete/5
+        // GET: Admin/Borrow/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +138,36 @@ namespace Library.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var borrow = await _context.Borrow
+                .Include(b => b.Book)
+                .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (borrow == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(borrow);
         }
 
-        // POST: Category/Delete/5
+        // POST: Admin/Borrow/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category != null)
+            var borrow = await _context.Borrow.FindAsync(id);
+            if (borrow != null)
             {
-                _context.Categories.Remove(category);
+                _context.Borrow.Remove(borrow);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool BorrowExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _context.Borrow.Any(e => e.Id == id);
         }
     }
 }

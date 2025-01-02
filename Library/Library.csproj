@@ -12,14 +12,14 @@
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
@@ -28,6 +28,58 @@
 
     <ItemGroup>
       <None Remove="app.db" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Areas\Admin\Controllers\" />
+      <Folder Include="Areas\Admin\Data\" />
+      <Folder Include="Areas\Admin\Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Author\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Author\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Author\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Author\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Author\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Book\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Book\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Book\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Book\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Book\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Category\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Category\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Category\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Category\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Category\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Book\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Book\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Book\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Book\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Book\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Create.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Details.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Index.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Book\Create.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Book\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Book\Details.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Book\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Areas\Admin\Views\Book\Index.cshtml" />
     </ItemGroup>
 
 </Project>

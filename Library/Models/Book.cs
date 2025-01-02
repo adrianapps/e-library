@@ -9,6 +9,7 @@ public class Book
     public string Title { get; set; }
     public string ISBN { get; set; }
     public string Description { get; set; }
+    public string? Cover { get; set; }
     [DataType(DataType.Date)] 
     public DateTime ReleaseDate { get; set; }
 
@@ -23,4 +24,9 @@ public class Book
     public ICollection<BookFile>? Files { get; set; } 
     public int Stock { get; set; }
     public ICollection<Borrow>? Borrows { get; set; }
+
+    public override string ToString()
+    {
+        return Title;
+    }
 }

@@ -1,4 +1,4 @@
-﻿using Library.Models;
+using Library.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -16,5 +16,6 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<BookFile> BookFiles { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<Library.Models.Borrow> Borrow { get; set; } = default!;
     
 }
