@@ -18,4 +18,5 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Category> Categories { get; set; }
     public DbSet<Author> Authors { get; set; }
     public DbSet<Library.Models.Borrow> Borrow { get; set; } = default!;
+    public DbSet<Message> Messages { get; set; }
 }
