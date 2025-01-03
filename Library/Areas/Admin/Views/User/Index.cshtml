@@ -1,0 +1,36 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Users Index";
+}
+
+<h1>Users Index</h1>
+
+<p>
+    <a asp-area="Admin" asp-controller="User" asp-action="Create" class="btn btn-primary">Create New User</a>
+</p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>UserName</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td>
+                <a asp-area="Admin" asp-controller="User" asp-action="Details" asp-route-id="@user.Id" class="btn btn-info">Details</a>
+                <a asp-area="Admin" asp-controller="User" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning">Edit</a>
+                <a asp-area="Admin" asp-controller="User" asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

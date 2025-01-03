@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Areas.Admin.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     [Area("Admin")]
     public class BookFileController : Controller
     {
@@ -51,7 +51,7 @@ namespace Library.Areas.Admin.Controllers
         // GET: Admin/BookFile/Create
         public IActionResult Create()
         {
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id");
+            ViewData["BookId"] = new SelectList(_context.Books, "Id");
             return View();
         }
 
@@ -60,15 +60,28 @@ namespace Library.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FileName,Description,FilePath,BookId")] BookFile bookFile)
+        public async Task<IActionResult> Create([Bind("Id,FileName,Description,FilePath,BookId")] BookFile bookFile,
+            IFormFile FilePath)
         {
             if (ModelState.IsValid)
             {
+                if (FilePath != null)
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/files", FilePath.FileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await FilePath.CopyToAsync(stream);
+                    }
+
+                    bookFile.FilePath = "/files/" + FilePath.FileName;
+                }
+
                 _context.Add(bookFile);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", bookFile.BookId);
+
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", null, bookFile.BookId);
             return View(bookFile);
         }
 
@@ -85,7 +98,7 @@ namespace Library.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", bookFile.BookId);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", null, bookFile.BookId);
             return View(bookFile);
         }
 
@@ -94,7 +107,8 @@ namespace Library.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FileName,Description,FilePath,BookId")] BookFile bookFile)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,FileName,Description,FilePath,BookId")] BookFile bookFile, IFormFile FilePath)
         {
             if (id != bookFile.Id)
             {
@@ -105,6 +119,18 @@ namespace Library.Areas.Admin.Controllers
             {
                 try
                 {
+                    if (FilePath != null)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/files",
+                            FilePath.FileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await FilePath.CopyToAsync(stream);
+                        }
+
+                        bookFile.FilePath = "/files/" + FilePath.FileName;
+                    }
+
                     _context.Update(bookFile);
                     await _context.SaveChangesAsync();
                 }
@@ -119,12 +145,14 @@ namespace Library.Areas.Admin.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", bookFile.BookId);
-            return View(bookFile);
-        }
 
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", null, bookFile.BookId);
+            return View(bookFile);
+        }        
+        
         // GET: Admin/BookFile/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

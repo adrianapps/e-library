@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     [Area("Admin")]
     public class CategoryController : Controller
     {
@@ -65,7 +65,6 @@ namespace Library.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             return View(category);
         }
 
@@ -82,7 +81,6 @@ namespace Library.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             return View(category);
         }
 
@@ -116,10 +114,8 @@ namespace Library.Areas.Admin.Controllers
                         throw;
                     }
                 }
-
                 return RedirectToAction(nameof(Index));
             }
-
             return View(category);
         }
 
