@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin,Staff")]
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
-    public class UserController : Controller
+    public class StaffController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public UserController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public StaffController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -25,7 +25,7 @@ namespace Library.Areas.Admin.Controllers
         // GET: Admin/User
         public async Task<IActionResult> Index()
         {
-            var users = _userManager.GetUsersInRoleAsync("User");
+            var users = _userManager.GetUsersInRoleAsync("Staff");
             return View(await users);
         }
 
