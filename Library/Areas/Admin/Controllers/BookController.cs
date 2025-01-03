@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Library.Areas.Admin.Controllers
 {
+    [Authorize(Roles="Admin,Staff")]
     [Area("Admin")]
     public class BookController : Controller
     {

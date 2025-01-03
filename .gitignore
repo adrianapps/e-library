@@ -483,4 +483,5 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 Library/wwwroot/images/
+Library/wwwroot/files/
 sqlite3.db

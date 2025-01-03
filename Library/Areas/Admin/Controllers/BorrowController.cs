@@ -8,10 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Library.Data;
 using Library.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Library.Areas.Admin.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles="Admin,Staff")]
     [Area("Admin")]
     public class BorrowController : Controller
     {
@@ -52,8 +53,8 @@ namespace Library.Areas.Admin.Controllers
         // GET: Admin/Borrow/Create
         public IActionResult Create()
         {
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
+            ViewData["BookId"] = new SelectList(_context.Books, "Id");
+            ViewData["UserId"] = new SelectList(_context.Set<IdentityUser>(), "Id");
             return View();
         }
 
@@ -70,8 +71,8 @@ namespace Library.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", borrow.BookId);
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", borrow.UserId);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", null, borrow.BookId);
+            ViewData["UserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Email", borrow.UserId);
             return View(borrow);
         }
 
@@ -88,8 +89,8 @@ namespace Library.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", borrow.BookId);
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", borrow.UserId);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", null, borrow.BookId);
+            ViewData["UserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Email", borrow.UserId);
             return View(borrow);
         }
 
@@ -125,8 +126,8 @@ namespace Library.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookId"] = new SelectList(_context.Books, "Id", "Id", borrow.BookId);
-            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", borrow.UserId);
+            ViewData["BookId"] = new SelectList(_context.Books, "Id", null, borrow.BookId);
+            ViewData["UserId"] = new SelectList(_context.Set<IdentityUser>(), "Id", "Email", borrow.UserId);
             return View(borrow);
         }
 

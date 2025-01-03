@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Microsoft.AspNetCore.Identity.IdentityUser
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1>User Details</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">UserName</dt>
+        <dd class="col-sm-10">@Model.UserName</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Id</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-area="Admin" asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-area="Admin" asp-controller="User" asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
