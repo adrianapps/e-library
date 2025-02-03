@@ -1,0 +1,57 @@
+﻿@model Library.Models.Book
+
+@{
+    ViewData["Title"] = "Szczegóły Książki";
+}
+
+<h1>Szczegóły Książki</h1>
+<div class="details-container">
+    <div class="details">
+        <p>
+            @if (!string.IsNullOrEmpty(Model.Cover))
+            {
+                <img src="@Model.Cover" alt="Okładka" width="50" />
+            }
+        </p>
+        <p><strong>Tytuł:</strong> @Model.Title</p>
+        <p><strong>Autor:</strong> @Model.Author</p>
+        <p><strong>Opis:</strong> @Model.Description</p>
+        <p><strong>Numer ISBN:</strong> @Model.ISBN</p>
+        <p><strong>Data wydania:</strong> @Model.ReleaseDate</p>
+        <p><strong>Kategoria:</strong> @Model.Category</p>
+        <p><strong>Autor:</strong> @Model.Author</p>
+    </div>
+
+    <div class="files">
+        @if (Model.Files.Count > 0)
+        {
+            <h3>Pliki do pobrania</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nazwa</th>
+                        <th>Opis</th>
+                        <th>Akcja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var file in Model.Files)
+                    {
+                        <tr>
+                            <td>@file.FileName</td>
+                            <td>@file.Description</td>
+                            <td>
+                                <a href="@file.FilePath" class="btn btn-primary" download>Pobierz</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+
+
+
+<a asp-action="Index">Powrót do listy</a>

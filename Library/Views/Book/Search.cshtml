@@ -1,0 +1,135 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Lista Książek";
+}
+
+<h1>Lista Książek</h1>
+
+<form method="get" asp-action="Search" class="mb-3">
+    <label for="category">Wybierz kategorię:</label>
+    <select id="category" name="categoryId" class="form-control">
+        @*onchange="this.form.submit()"*@
+        @if (ViewBag.SelectedCategory != null)
+        {
+            <option value="@ViewBag.SelectedCategory.Id" hidden>@ViewBag.SelectedCategory.Name</option>
+        }
+        <option value="0">Wszystkie</option>
+        @foreach (var category in ViewBag.Categories as SelectList)
+        {
+            <option value="@category.Value">@category.Text</option>
+        }
+    </select>
+    <input type="text" id="searchQuery" name="query" placeholder="Wyszukaj książkę" value="@ViewBag.query" class="form-control" />
+    <button type="submit" class="btn btn-primary mt-2">Szukaj</button>
+</form>
+
+<h1>Wyniki wyszukiwania</h1>
+
+
+@* <table class="table">
+    <thead>
+        <tr>
+            <th>Okładka</th>
+            <th>Tytuł</th>
+            <th>Autor</th>
+            <th>ISBN</th>
+            <th>Opcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(book.Cover))
+                    {
+                        <img src="@book.Cover" alt="Okładka" width="50" />
+                    }
+                </td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.ISBN</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@book.Id">Szczegóły</a>
+                    <button class="btn btn-success add-to-cart" data-id="@book.Id">
+                        Dodaj do koszyka
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> *@
+
+<div id="searchResults">
+    <!-- Wyniki wyszukiwania będą wyświetlane tutaj -->
+    @* @Html.Partial("_SearchResults", books) <!-- Z renderowaniem wyników początkowych --> *@
+    <partial name="_SearchResults" />
+</div>
+
+<!-- Skrypt AJAX -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".add-to-cart").click(function () {
+            var bookId = $(this).data("id");
+
+            $.ajax({
+                url: "/Cart/AddToCart",
+                type: "POST",
+                data: { bookId: bookId },
+                success: function (response) {
+                    if (response.success) {
+                        alert("✅ Książka została dodana do koszyka!");
+                    } else {
+                        alert("⚠ Nie udało się dodać książki do koszyka: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Błąd podczas dodawania do koszyka.");
+                }
+            });
+        });
+    });
+</script>
+
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let timeout;
+
+            function performSearch() {
+                clearTimeout(timeout);
+                var query = $('#searchQuery').val();
+                var categoryId = $('#category').val();
+
+                timeout = setTimeout(function () {
+                    $.ajax({
+                        url: '@Url.Action("Search2", "Book")',
+                        type: 'GET',
+                        data: { query: query, categoryId: categoryId },
+                        success: function (data) {
+                            $('#searchResults').html(data);
+                        },
+                        error: function () {
+                            alert('Wystąpił błąd.');
+                        }
+                    });
+                }, 300); // 300 ms opóźnienia
+            }
+
+            // Obsługa wpisywania w pole wyszukiwania
+            $('#searchQuery').on('input', function () {
+                performSearch();
+            });
+
+            // Obsługa zmiany kategorii
+            $('#category').on('change', function () {
+                performSearch();
+            });
+        });
+    </script>
+}

@@ -41,11 +41,6 @@
       <_ContentIncludedByDefault Remove="Views\Author\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Author\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Author\Index.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Book\Create.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Book\Delete.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Book\Details.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Book\Edit.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Book\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Category\Create.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Category\Delete.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Category\Details.cshtml" />

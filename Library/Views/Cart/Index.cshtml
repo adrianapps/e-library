@@ -1,0 +1,49 @@
+﻿@model List<Library.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Koszyk";
+}
+
+<h1>Twój koszyk</h1>
+
+@if (!Model.Any())
+{
+    <p>Twój koszyk jest pusty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Okładka</th>
+                <th>Tytuł</th>
+                <th>Autor</th>
+                <th>ISBN</th>
+                <th>Opcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Cover))
+                        {
+                            <img src="@item.Cover" alt="Okładka" width="50" />
+                        }
+                    </td>
+                    <td>@item.Title</td>
+                    <td>@item.AuthorName</td>
+                    <td>@item.ISBN</td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-bookId="@item.BookId" class="btn btn-danger">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="BorrowBooks" method="post">
+        <button type="submit" class="btn btn-primary">Wypożycz książki</button>
+    </form>
+}

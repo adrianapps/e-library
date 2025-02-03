@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Library.Models.Message>
+
+@if (Model.Any())
+{
+    <div class="message-list">
+        @foreach (var message in Model)
+        {
+            <div class="message-card">
+                <h5>@message.Title</h5>
+                <p>@message.Description</p>
+                <div class="message-time">
+                    <i class="fas fa-clock"></i> @message.Timestamp.ToString("dd-MM-yyyy HH:mm")
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="no-messages">Brak wiadomości do wyświetlenia.</p>
+}

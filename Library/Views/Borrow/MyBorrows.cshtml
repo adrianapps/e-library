@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Library.Models.Borrow>
+
+@{
+    ViewData["Title"] = "Moje Wypożyczenia";
+}
+
+<h1>Moje Wypożyczenia</h1>
+
+@if (!Model.Any())
+{
+    <p>Nie masz żadnych wypożyczeń.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Data wypożyczenia</th>
+                <th>Data zwrotu</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var borrow in Model)
+            {
+                <tr>
+                    <td>@borrow.Book.Title</td>
+                    <td>@borrow.BorrowDate?.ToString("yyyy-MM-dd")</td>
+                    <td>@(borrow.ReturnDate.HasValue ? borrow.ReturnDate.Value.ToString("yyyy-MM-dd") : "Brak")</td>
+                    <td>
+                        @if (borrow.Status == BorrowStatus.Returned)
+                        {
+                            <span class="badge bg-success">Zwrócone</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Wypożyczone</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

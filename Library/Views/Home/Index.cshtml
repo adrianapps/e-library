@@ -1,8 +1,45 @@
-﻿@{
+﻿@model List<Message>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Library</h1>
+
+    <h1>Ostatnie wiadomości</h1>
+    <div class="messages">
+        @await Html.PartialAsync("_MessageCard", Model)
+    </div>
+
+    <h2>Nowości</h2>
+    <div class="news">
+        @await Html.PartialAsync("_SearchResults", (List<Book>)ViewBag.latestBooks)
+    </div>
+    
+
+    @* <table class="table">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Autor</th>
+                <th>Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in ViewBag.latestBooks)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author.ToString()</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@book.Id">Szczegóły</a>
+                        <button class="btn btn-success add-to-cart" data-id="@book.Id">
+                            Dodaj do koszyka
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table> *@
 </div>
