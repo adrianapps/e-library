@@ -110,6 +110,27 @@ namespace Library.Areas.Admin.Controllers
             {
                 try
                 {
+                    // Pobierz oryginalny stan wypo¿yczenia z bazy danych
+                    var existingBorrow = await _context.Borrow
+                        .AsNoTracking() // Unikamy œledzenia zmian na tym obiekcie
+                        .FirstOrDefaultAsync(b => b.Id == borrow.Id);
+
+                    if (existingBorrow == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Jeœli zmieniono status na "Returned", zwiêksz stan magazynowy ksi¹¿ki
+                    if (existingBorrow.Status != BorrowStatus.Returned && borrow.Status == BorrowStatus.Returned)
+                    {
+                        var book = await _context.Books.FirstOrDefaultAsync(b => b.Id == borrow.BookId);
+                        if (book != null)
+                        {
+                            book.Stock++; // Zwiêkszamy iloœæ dostêpnych egzemplarzy
+                            _context.Update(book);
+                        }
+                    }
+
                     _context.Update(borrow);
                     await _context.SaveChangesAsync();
                 }

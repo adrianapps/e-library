@@ -3,27 +3,32 @@
 
 // Write your JavaScript code.
 
-//$(document).ready(function () {
-//    $(".add-to-cart").click(function () {
-//        var bookId = $(this).data("id");
+    $(document).ready(function() {
+        $(".add-to-cart").click(function () {
+            var bookId = $(this).data("id");
 
-//        $.ajax({
-//            url: "/Cart/AddToCart",
-//            type: "POST",
-//            data: { bookId: bookId },
-//            success: function (response) {
-//                if (response.success) {
-//                    alert("✅ Książka została dodana do koszyka!");
-//                } else {
-//                    alert("⚠ Nie udało się dodać książki do koszyka: " + response.message);
-//                }
-//            },
-//            error: function () {
-//                alert("Błąd podczas dodawania do koszyka.");
-//            }
-//        });
-//    });
-//});
+            $.ajax({
+                url: "/Cart/AddToCart",
+                type: "POST",
+                data: { bookId: bookId },
+                success: function (response) {
+                    if (response.success) {
+                        var toast = new bootstrap.Toast(document.getElementById("cartToastSuccess"));
+                        $("#cartToast .toast-body").text("Książka została dodana do koszyka!");
+                        toast.show();
+                    } else {
+                        var toast = new bootstrap.Toast(document.getElementById("cartToastError"));
+                        $("#cartToast .toast-body").text("Nie udało się dodać książki do koszyka ") + response.message;
+                        toast.show();
+                    }
+                },
+                error: function () {
+                    alert("Błąd podczas dodawania do koszyka.");
+                }
+            });
+        });
+    });
+
 
 //$(document).ready(function () {
 //    let timeout;

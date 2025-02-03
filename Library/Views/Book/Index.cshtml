@@ -79,9 +79,11 @@
     @* <partial name="_SearchResults" /> *@
 </div>
 
+
+
 <!-- Skrypt AJAX -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+@* <script>
     $(document).ready(function() {
         $(".add-to-cart").click(function() {
             var bookId = $(this).data("id");
@@ -92,9 +94,13 @@
                 data: { bookId: bookId },
                 success: function(response) {
                     if (response.success) {
-                        alert("✅ Książka została dodana do koszyka!");
+                        var toast = new bootstrap.Toast(document.getElementById("cartToastSuccess"));
+                        $("#cartToast .toast-body").text("Książka została dodana do koszyka!");
+                        toast.show();
                     } else {
-                        alert("⚠ Nie udało się dodać książki do koszyka: " + response.message);
+                        var toast = new bootstrap.Toast(document.getElementById("cartToastError"));
+                        $("#cartToast .toast-body").text("Nie udało się dodać książki do koszyka ") + response.message;
+                        toast.show();
                     }
                 },
                 error: function() {
@@ -103,7 +109,7 @@
             });
         });
     });
-</script>
+</script> *@
 
 
 @section Scripts {
