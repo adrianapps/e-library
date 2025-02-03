@@ -3,6 +3,10 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
+using Library.Resources;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +31,28 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization() // Wspiera lokalizacjê widoków
+    .AddDataAnnotationsLocalization(); // Wspiera t³umaczenie walidacji modelu
+
+// Lista obs³ugiwanych jêzyków
+var supportedCultures = new[]
+{
+    new CultureInfo("pl"),  // Polski
+    new CultureInfo("en")   // Angielski
+};
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("pl"); // Domyœlny jêzyk
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
+builder.Services.AddSingleton<SharedResource>();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +66,10 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// W³¹czenie lokalizacji
+var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
+app.UseRequestLocalization(localizationOptions);
 
 app.UseSession();
 app.UseHttpsRedirection();

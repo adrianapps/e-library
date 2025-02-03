@@ -1,25 +1,27 @@
-﻿@model List<Library.Models.CartItem>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model List<Library.Models.CartItem>
 
 @{
-    ViewData["Title"] = "Koszyk";
+    ViewData["Title"] = @Localizer["Cart"];
 }
 
-<h1>Twój koszyk</h1>
+<h1>@Localizer["YourCart"]</h1>
 
 @if (!Model.Any())
 {
-    <p>Twój koszyk jest pusty.</p>
+    <p>@Localizer["EmptyCart"]</p>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Okładka</th>
-                <th>Tytuł</th>
-                <th>Autor</th>
-                <th>ISBN</th>
-                <th>Opcje</th>
+                <th>@Localizer["Cover"]</th>
+                <th>@Localizer["Title"]</th>
+                <th>@Localizer["Author"]</th>
+                <th>@Localizer["ISBN"]</th>
+                <th>@Localizer["Action"]</th>
             </tr>
         </thead>
         <tbody>
@@ -29,14 +31,14 @@ else
                     <td>
                         @if (!string.IsNullOrEmpty(item.Cover))
                         {
-                            <img src="@item.Cover" alt="Okładka" width="50" />
+                            <img src="@item.Cover" alt=@Localizer["Cover"] width="50" />
                         }
                     </td>
                     <td>@item.Title</td>
                     <td>@item.AuthorName</td>
                     <td>@item.ISBN</td>
                     <td>
-                        <a asp-action="RemoveFromCart" asp-route-bookId="@item.BookId" class="btn btn-danger">Usuń</a>
+                        <a asp-action="RemoveFromCart" asp-route-bookId="@item.BookId" class="btn btn-danger">@Localizer["Delete"]</a>
                     </td>
                 </tr>
             }
@@ -44,6 +46,6 @@ else
     </table>
 
     <form asp-action="BorrowBooks" method="post">
-        <button type="submit" class="btn btn-primary">Wypożycz książki</button>
+        <button type="submit" class="btn btn-primary">@Localizer["BorrowBooks"]</button>
     </form>
 }

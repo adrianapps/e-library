@@ -81,4 +81,10 @@
       <UpToDateCheckInput Remove="Areas\Admin\Views\Category\Index.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Views\Shared\_SearchResults.en.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

@@ -1,115 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
     ViewData["Title"] = "Lista Książek";
 }
 
-<h1>Lista Książek</h1>
+<h1>@Localizer["BookList"]</h1>
 
-<label for="category">Wybierz kategorię:</label>
+<label for="category">@Localizer["SelectCategory"]</label>
 <form method="get" asp-action="Index" class="mb-3 search">
     
-    <select id="category" name="categoryId" class="form-control">  @*onchange="this.form.submit()"*@
+    <select id="category" name="categoryId" class="form-control">
         @if (ViewBag.SelectedCategory != null)
         {
             <option value="@ViewBag.SelectedCategory.Id" hidden>@ViewBag.SelectedCategory.Name</option>
         }
-        <option value="0">Wszystkie</option>
+        <option value="0">@Localizer["All"]</option>
         @foreach (var category in ViewBag.Categories as SelectList)
         {
             <option value="@category.Value">@category.Text</option>
         }
     </select>
     <br />
-    <input type="text" id="searchQuery" name="query" placeholder="Wyszukaj książkę" value="@ViewBag.query" class="form-control" />
-    <button type="submit" class="btn btn-primary">Szukaj</button>
+    <input type="text" id="searchQuery" name="query" placeholder=@Localizer["SearchBook"] value="@ViewBag.query" class="form-control" />
+    <button type="submit" class="btn btn-primary">@Localizer["Search"]</button>
 </form>
 
-<h2>Book List</h2>
+<h1>@Localizer["SearchResults"]</h1>
 
-@* <div class="book-list">
-    @foreach (var book in Model)
-    {
-        @await Html.PartialAsync("_BookCard", (Book)book)
-    }
-</div> *@
-
-<h1>Wyniki wyszukiwania</h1>
-
-
-@* <table class="table">
-    <thead>
-        <tr>
-            <th>Okładka</th>
-            <th>Tytuł</th>
-            <th>Autor</th>
-            <th>ISBN</th>
-            <th>Opcje</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var book in Model)
-        {
-            <tr>
-                <td>
-                    @if (!string.IsNullOrEmpty(book.Cover))
-                    {
-                        <img src="@book.Cover" alt="Okładka" width="50" />
-                    }
-                </td>
-                <td>@book.Title</td>
-                <td>@book.Author</td>
-                <td>@book.ISBN</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@book.Id">Szczegóły</a>
-                    <button class="btn btn-success add-to-cart" data-id="@book.Id">
-                        Dodaj do koszyka
-                    </button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table> *@
 
 <div id="searchResults">
-    <!-- Wyniki wyszukiwania będą wyświetlane tutaj -->
-    @* @Html.Partial("_SearchResults", books) <!-- Z renderowaniem wyników początkowych --> *@
     @await Html.PartialAsync("_SearchResults", (List<Book>)Model)
     @* <partial name="_SearchResults" /> *@
 </div>
-
-
-
-<!-- Skrypt AJAX -->
-@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
-@* <script>
-    $(document).ready(function() {
-        $(".add-to-cart").click(function() {
-            var bookId = $(this).data("id");
-
-            $.ajax({
-                url: "/Cart/AddToCart",
-                type: "POST",
-                data: { bookId: bookId },
-                success: function(response) {
-                    if (response.success) {
-                        var toast = new bootstrap.Toast(document.getElementById("cartToastSuccess"));
-                        $("#cartToast .toast-body").text("Książka została dodana do koszyka!");
-                        toast.show();
-                    } else {
-                        var toast = new bootstrap.Toast(document.getElementById("cartToastError"));
-                        $("#cartToast .toast-body").text("Nie udało się dodać książki do koszyka ") + response.message;
-                        toast.show();
-                    }
-                },
-                error: function() {
-                    alert("Błąd podczas dodawania do koszyka.");
-                }
-            });
-        });
-    });
-</script> *@
 
 
 @section Scripts {

@@ -1,9 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using System.Globalization;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Library</title>
+    <title>@ViewData["Title"] - @Localizer["Library"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Library.styles.css" asp-append-version="true"/>
@@ -13,7 +17,7 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Library</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Library"]</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -21,19 +25,29 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="book" asp-action="Index">Lista książek</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="book" asp-action="Index">@Localizer["Books"]</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="borrow" asp-action="MyBorrows">Historia wypożyczeń</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="borrow" asp-action="MyBorrows">@Localizer["BorrowHistory"]</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="cart" asp-action="Index">Koszyk</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="cart" asp-action="Index">@Localizer["Cart"]</a>
+                    </li>
+                        <li class="nav-item">
+                            <form asp-controller="home" asp-action="SetLanguage" method="post" class="nav-link text-dark">
+                                <select name="culture" onchange="this.form.submit()">
+                                    <option value="pl" selected="@(CultureInfo.CurrentCulture.Name == "pl" ? "selected" : null)">🇵🇱 Polski</option>
+                                    <option value="en" selected="@(CultureInfo.CurrentCulture.Name == "en" ? "selected" : null)">🇬🇧 English</option>
+                                </select>
+                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                            </form>
+
                     </li>
                 </ul>
                 <partial name="_LoginPartial"/>
@@ -52,7 +66,7 @@
         <div id="cartToastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    Książka została dodana do koszyka!
+                    @Localizer["BookAddCart"]
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -61,7 +75,7 @@
         <div id="cartToastError" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="polite" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    Nie udało się dodać książki do koszyka
+                    @Localizer["BookAddFail"]
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -70,7 +84,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2024 - Library - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - @Localizer["Library"] - <a asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

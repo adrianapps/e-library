@@ -1,24 +1,26 @@
-﻿@model IEnumerable<Library.Models.Borrow>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<Library.Models.Borrow>
 
 @{
-    ViewData["Title"] = "Moje Wypożyczenia";
+    ViewData["Title"] = @Localizer["MyBorrows"];
 }
 
-<h1>Moje Wypożyczenia</h1>
+<h1>@Localizer["MyBorrows"]</h1>
 
 @if (!Model.Any())
 {
-    <p>Nie masz żadnych wypożyczeń.</p>
+    <p>@Localizer["NoBorrows"]</p>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Tytuł</th>
-                <th>Data wypożyczenia</th>
-                <th>Data zwrotu</th>
-                <th>Status</th>
+                <th>@Localizer["Title"]</th>
+                <th>@Localizer["BorrowDate"]a</th>
+                <th>@Localizer["ReturnDate"]</th>
+                <th>@Localizer["Status"]</th>
             </tr>
         </thead>
         <tbody>
@@ -31,11 +33,11 @@ else
                     <td>
                         @if (borrow.Status == BorrowStatus.Returned)
                         {
-                            <span class="badge bg-success">Zwrócone</span>
+                            <span class="badge bg-success">@Localizer["Returned"]</span>
                         }
                         else
                         {
-                            <span class="badge bg-warning">Wypożyczone</span>
+                            <span class="badge bg-warning">@Localizer["Borrowed"]</span>
                         }
                     </td>
                 </tr>

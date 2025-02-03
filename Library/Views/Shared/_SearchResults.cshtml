@@ -1,23 +1,11 @@
-﻿@* @{
-    Layout = null;  // Wyłączamy layout dla tego widoku
-} *@
-@model IEnumerable<Book>
+﻿@model IEnumerable<Book>
 
 @if (Model != null && Model.Any())
 {
-   @*  <ul>
-        @foreach (var book in Model)
-        {
-            <li>@book.Title - @book.Author.FirstName @book.Author.LastName</li>
-        }
-    </ul>
-    <p>xD</p> *@
-
     <div class="book-list">
         @foreach (var book in Model)
         {
             @await Html.PartialAsync("_BookCard", (Book)book)
-            @* @Html.Partial("_BookComponent", book) <!-- Używamy widoku częściowego --> *@
             @* <partial name="_BookCard" /> *@
         }
     </div>
@@ -27,33 +15,4 @@ else
     <p>Brak wyników</p>
 }
 
-
-<!-- Skrypt AJAX -->
 <script src="~/js/site.js"></script>
-@* <script>
-    $(document).ready(function () {
-        $(".add-to-cart").click(function () {
-            var bookId = $(this).data("id");
-
-            $.ajax({
-                url: "/Cart/AddToCart",
-                type: "POST",
-                data: { bookId: bookId },
-                success: function (response) {
-                    if (response.success) {
-                        var toast = new bootstrap.Toast(document.getElementById("cartToastSuccess"));
-                        $("#cartToast .toast-body").text("Książka została dodana do koszyka!");
-                        toast.show();
-                    } else {
-                        var toast = new bootstrap.Toast(document.getElementById("cartToastError"));
-                        $("#cartToast .toast-body").text("Nie udało się dodać książki do koszyka ") + response.message;
-                        toast.show();
-                    }
-                },
-                error: function () {
-                    alert("Błąd podczas dodawania do koszyka.");
-                }
-            });
-        });
-    });
-</script> *@

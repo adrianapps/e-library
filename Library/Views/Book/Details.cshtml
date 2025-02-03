@@ -1,37 +1,38 @@
-﻿@model Library.Models.Book
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model Library.Models.Book
 
 @{
-    ViewData["Title"] = "Szczegóły Książki";
+    ViewData["Title"] = @Localizer["BookDetails"];
 }
 
-<h1>Szczegóły Książki</h1>
+<h1>@Localizer["BookDetails"]</h1>
 <div class="details-container">
     <div class="details">
         <p>
             @if (!string.IsNullOrEmpty(Model.Cover))
             {
-                <img src="@Model.Cover" alt="Okładka" width="50" />
+                <img src="@Model.Cover" alt=@Localizer["Cover"] width="50" />
             }
         </p>
-        <p><strong>Tytuł:</strong> @Model.Title</p>
-        <p><strong>Autor:</strong> @Model.Author</p>
-        <p><strong>Opis:</strong> @Model.Description</p>
-        <p><strong>Numer ISBN:</strong> @Model.ISBN</p>
-        <p><strong>Data wydania:</strong> @Model.ReleaseDate</p>
-        <p><strong>Kategoria:</strong> @Model.Category</p>
-        <p><strong>Autor:</strong> @Model.Author</p>
+        <p><strong>@Localizer["Title"]</strong> @Model.Title</p>
+        <p><strong>@Localizer["Author"]</strong> @Model.Author</p>    
+        <p><strong>@Localizer["Category"]</strong> @Model.Category</p>
+        <p><strong>@Localizer["ISBN"]</strong> @Model.ISBN</p>
+        <p><strong>@Localizer["ReleaseDate"]</strong> @Model.ReleaseDate</p>
+        <p><strong>@Localizer["Description"]</strong> @Model.Description</p>
     </div>
 
     <div class="files">
         @if (Model.Files.Count > 0)
         {
-            <h3>Pliki do pobrania</h3>
+            <h3>@Localizer["DownloadFiles"]</h3>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Nazwa</th>
-                        <th>Opis</th>
-                        <th>Akcja</th>
+                        <th>@Localizer["Name"]</th>
+                        <th>@Localizer["Description"]</th>
+                        <th>@Localizer["Action"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +42,7 @@
                             <td>@file.FileName</td>
                             <td>@file.Description</td>
                             <td>
-                                <a href="@file.FilePath" class="btn btn-primary" download>Pobierz</a>
+                                <a href="@file.FilePath" class="btn btn-primary" download>@Localizer["Download"]</a>
                             </td>
                         </tr>
                     }
@@ -51,7 +52,4 @@
     </div>
 </div>
 
-
-
-
-<a asp-action="Index">Powrót do listy</a>
+<a asp-action="Index">@Localizer["BackToList"]</a>

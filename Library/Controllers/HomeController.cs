@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Library.Models;
 using Microsoft.EntityFrameworkCore;
 using Library.Data;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
+using System.Globalization;
 
 namespace Library.Controllers;
 
@@ -24,6 +27,7 @@ public class HomeController : Controller
         // Pobierz ostatnie 5 ksi¹¿ek
         var latestBooks = _context.Books
             .Include(b => b.Author)
+            .Include(b => b.Category)
             .OrderByDescending(b => b.Id)  
             .Take(5)  
             .ToList();
@@ -43,5 +47,15 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public IActionResult SetLanguage(string culture, string returnUrl)
+    {
+        Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+
+        return LocalRedirect(returnUrl);
     }
 }

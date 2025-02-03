@@ -57,37 +57,7 @@ namespace Library.Controllers
             return View(book);
         }
 
-        public async Task<IActionResult> Search(string? query, int? categoryId)
-        {
-            var categories = _context.Categories.ToList();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-
-            var books = _context.Books.Include(b => b.Author).Include(b => b.Category).AsQueryable();
-
-
-            if (categoryId.HasValue && categoryId > 0)
-            {
-                books = books.Where(b => b.CategoryId == categoryId);
-                ViewBag.SelectedCategory = categories
-                                                .Where(c => c.Id == categoryId)
-                                                .FirstOrDefault();
-            }
-
-            if (string.IsNullOrEmpty(query))
-            {
-                return View(await books.ToListAsync());
-                //return PartialView("_SearchResults", await books.ToListAsync());
-            }
-
-            ViewBag.query = query;
-
-            var results = SearchBooks(query, books);
-
-
-            return View(results.ToList());
-            //return PartialView("_SearchResults", await results.ToListAsync());
-
-        }
+        
 
         public async Task<IActionResult> Search2(string? query, int? categoryId)
         {
